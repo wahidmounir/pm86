@@ -18,6 +18,12 @@
 
   - [完全开源, 地址](https://github.com/ericjjj/PM86), 可部署在私有服务器, 利用 API 开发移动端监控 APP
 
+## 使用
+``` bash
+cnpm install pm86 -g
+pm86 interact secret_key public_key
+pm86 start processes.json
+```
 
 ## 功能
 - [x] Element UI
