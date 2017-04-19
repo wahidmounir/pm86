@@ -6,6 +6,8 @@
 [![npm](https://img.shields.io/npm/dt/pm86.svg)](https://www.npmjs.com/package/pm86)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
+[English](https://github.com/ericjjj/pm86/blob/master/README_EN.md)
+
 ## 起源
   因为公司准备统一部署 监控等流程, 需要一个完善的工具做这些事情, 所以就有了这个项目的诞生, V1 做的比较粗糙, 经过了一段时间闲置, 又进行了打磨, 改进, 接下来会持续更新, 作为主要项目来维护, 谢谢, 如果在使用过程中遇到问题,  请联系我 github@ericjj.com
 
@@ -34,24 +36,6 @@ pm86 start processes.json
 - [x] 邮件报警通知
 - [ ] 移动端 APP
 - [ ] 慢路由
-## Demo Pic
-
-![Login](http://ohusmobs2.bkt.clouddn.com/20170323149025368139834.png)
-
-![Buckets](http://ohusmobs2.bkt.clouddn.com/2017032714905445717484.png)
-
-![Bucket](http://ohusmobs2.bkt.clouddn.com/20170323149025373745286.png)
-
-![Bucket](http://ohusmobs2.bkt.clouddn.com/2017032314902537439632.png)
-
-激活邮件
-![激活](http://ohusmobs2.bkt.clouddn.com/2017032714905443908633.png)
-
-email 通知
-![email](http://ohusmobs2.bkt.clouddn.com/20170323149025516183982.png)
-
-
-
 
 ## 运行
 **Requires Node.js 6+**
@@ -74,11 +58,27 @@ $ node server.js
 $ cnpm install pm86 -g
 $ cd your-project-path, 创建下面的 processes.json 文件
 // 本机环境注册
-$ KEYMETRICS_NODE=127.0.0.1 KEYMETRICS_PORT=3000 REMOTE_REVERSE_PORT=43554  REMOTE_PORT=41624 pm86 interact secret_key public_key
+$ pm86 interact secret_key public_key
 // 启动服务
 $ pm86 start processes.json
   打开 http://127.0.0.1:3000/buckets 进入对应实例 即可看到对应监控项目
 ```
+
+## Demo Pic
+
+![Login](http://ohusmobs2.bkt.clouddn.com/20170323149025368139834.png)
+
+![Buckets](http://ohusmobs2.bkt.clouddn.com/2017032714905445717484.png)
+
+![Bucket](http://ohusmobs2.bkt.clouddn.com/20170323149025373745286.png)
+
+![Bucket](http://ohusmobs2.bkt.clouddn.com/2017032314902537439632.png)
+
+激活邮件
+![激活](http://ohusmobs2.bkt.clouddn.com/2017032714905443908633.png)
+
+email 通知
+![email](http://ohusmobs2.bkt.clouddn.com/20170323149025516183982.png)
 
 ## 部署
 如果设置了 ufw 等防火墙, 需要开放的端口有: 3000, 3002, 8080. 43554, 43555, 43666
