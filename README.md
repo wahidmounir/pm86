@@ -54,9 +54,9 @@ $ node server.js
 4.install pm86
 $ npm install pm86 -g
 $ cd your-project-path, create `processes.json` fole
-// register you machine
+# register you machine
 $ pm86 interact secret_key public_key
-// start service
+# start service
 $ pm86 start processes.json
   open http://127.0.0.1:3000/buckets
 ```
