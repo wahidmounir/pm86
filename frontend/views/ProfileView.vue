@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import * as api from '../store/api'
+import api from 'stores/api'
 export default {
   data: function(){
     return {
@@ -37,26 +37,26 @@ export default {
   methods: {
     submitForm(formName) {
       const _this = this;
-      _this.$refs[formName].validate((valid) => {
-        if (valid) {
-          api.post({
-            url: 'account/resetPassword',
-            data: _this.ruleForm
-          }).then((result) => {
-            console.log(result);
-            _this.$message.success('success')
-            localStorage.setItem('email', null);
-            localStorage.setItem('user', null);
-            _this.$router.push('/login')
-          }).catch((err) => {
-            console.log(err);
-            _this.$message.error(err.toString())
-          })
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+      // _this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     api.post({
+      //       url: 'account/resetPassword',
+      //       data: _this.ruleForm
+      //     }).then((result) => {
+      //       console.log(result);
+      //       _this.$message.success('success')
+      //       localStorage.setItem('email', null);
+      //       localStorage.setItem('user', null);
+      //       _this.$router.push('/login')
+      //     }).catch((err) => {
+      //       console.log(err);
+      //       _this.$message.error(err.toString())
+      //     })
+      //   } else {
+      //     console.log('error submit!!');
+      //     return false;
+      //   }
+      // });
     }
   },
   beforeMount () {

@@ -20,7 +20,9 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'public': path.resolve(__dirname, '../public')
+      'public': path.resolve(__dirname, '../public'),
+      'stores': path.resolve(__dirname, '../frontend/stores'),
+      'views': path.resolve(__dirname, '../frontend/views')
     }
   },
   module: {

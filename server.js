@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(rewriteMiddleware);
 app.use(compression({ threshold: 0 }));
-app.use(favicon('./public/logo.png'));
+app.use(favicon('./frontend/public/logo.png'));
 
 app.use(session({
     secret: 'pm86',

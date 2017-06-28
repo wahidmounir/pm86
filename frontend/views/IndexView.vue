@@ -1,5 +1,7 @@
 <template lang="pug">
 #home-view.view
+  h1.title Wellcome to PM86 !
+  p(@click='github') Login
   .listItem(v-for='(item, index) in items')
     router-link.link(:to="'/bucket/' + item.public_key")
       p.name {{item.bucket_name}}
@@ -8,7 +10,7 @@
 </template>
 
 <script>
-
+import api from 'stores/api'
 export default {
   name: 'home-view',
   computed: {
@@ -16,15 +18,54 @@ export default {
       return this.$store.state.buckets
     }
   },
+  data () {
+    return {
+      gitConfig: {
+        client_id: 'ddf8e94834e773472899',
+        client_secret: '47fbd6e9c4f0309f76ca46b31728efba65ef4feb',
+        scope: 'user:email'
+      }
+    }
+  },
   methods: {
+    github () {
+    const dataStr = (new Date()).valueOf();
+    localStorage.setItem('state', dataStr);
+    location.href = `https://github.com/login/oauth/authorize?client_id=${this.gitConfig.client_id}&scope=${this.gitConfig.scope}&state=${dataStr}`;
+    }
   },
   mounted () {
-    this.$store.dispatch('FETCH_BUCKETS', {msg: this.$message})
+    if (this.$route.query.code &&
+        this.$route.query.state &&
+        this.$route.query.state === localStorage.getItem('state')) {
+      const result = api.post(`https://github.com/login/oauth/access_token?
+                client_id=${this.gitConfig.client_id}&
+                client_secret=${this.gitConfig.client_secret}
+                &code=${this.$route.query.code}`)
+         .then(result => {
+        console.log(result);
+        const args = result.data.split('&');
+        const tokenInfo = args[0].split("=");
+        const token = tokenInfo[1];
+        api.get(`https://api.github.com/user?access_token=${token}`).then(result => {
+          console.log(result);
+        })
+      })
+
+    } else {
+      console.log('查询登录失败');
+    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+
+.title {
+  font-weight: 400;
+  font-size: 2rem;
+}
+
 /* 列表项间隔padding-top */
 .listItem {
     position: relative;

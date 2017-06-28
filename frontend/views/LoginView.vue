@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import * as api from '../store/api'
+import api from 'stores/api'
 export default {
   name: 'login-view',
   data() {
@@ -48,23 +48,23 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      let _this = this
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          _this.$store.dispatch("USER_LOGIN", {
-            form: _this.ruleForm,
-            msg: _this.$message,
-            callback: (result) => {
-              localStorage.setItem('email', result.data.data.email);
-              _this.$message.success("登陆成功")
-              _this.$router.push('/buckets')
-            }
-          })
-        } else {
-          console.log('error submit!!')
-          return false;
-        }
-      });
+      // let _this = this
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     _this.$store.dispatch("USER_LOGIN", {
+      //       form: _this.ruleForm,
+      //       msg: _this.$message,
+      //       callback: (result) => {
+      //         localStorage.setItem('email', result.data.data.email);
+      //         _this.$message.success("登陆成功")
+      //         _this.$router.push('/buckets')
+      //       }
+      //     })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false;
+      //   }
+      // });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()

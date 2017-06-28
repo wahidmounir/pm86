@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store'
-import router from './router'
+import store from './stores'
+import router from './routers'
 import { sync } from 'vuex-router-sync'
 import * as filters from './filters'
 import ElementUI from 'element-ui'
-import Vheader from './components/Vheader.vue'
+// import Vheader from './components/Vheader.vue'
 sync(store, router)
 
 Vue.use(ElementUI)
-Vue.component(Vheader.name, Vheader)
+// Vue.component(Vheader.name, Vheader)
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

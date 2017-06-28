@@ -13,6 +13,11 @@
     "ports": {
       "wss":    "3002",
       "ioswss": "8055"
+    },
+    "gitConfig": {
+      "client_id": "",
+      "client_secret": "",
+      "scope": "user:email"
     }
   },
   "prod": { // 自行配置反向代理
@@ -38,6 +43,11 @@
       "user" : "your email",
       "pass" : "your email password"
     }
+  },
+  "gitConfig": {
+    "client_id": "",
+    "client_secret": "",
+    "scope": "user:email"
   },
   "log": {
     "appenders": [{

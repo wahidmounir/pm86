@@ -4,7 +4,7 @@
 
 <script>
 
-import * as api from '../store/api'
+import api from 'stores/api'
 
 export default {
   name: 'verify',

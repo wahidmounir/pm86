@@ -1,6 +1,5 @@
 <template lang="pug">
   #app
-    vheader
     transition(name="fade" mode="out-in")
       router-view
 </template>
@@ -21,7 +20,11 @@ html
   height 100%
 
 body
-  font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: Avenir,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
   font-size 15px
   background-color lighten(#eceef1, 70%)
   margin 0
@@ -29,7 +32,6 @@ body
   width 100%
   height 100%
   padding 0
-  color #34495e
   overflow-y scroll
 
 #app

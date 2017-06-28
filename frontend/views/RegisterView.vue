@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import * as api from '../store/api'
+import api from 'stores/api'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -70,22 +70,22 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      let _this = this
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          _this.$store.dispatch("USER_REGISTER", {
-            form: _this.ruleForm,
-            msg: _this.$message,
-            callback: (result) => {
-              _this.$message.success("注册成功")
-              _this.$router.push('/login')
-            }
-          })
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+      // let _this = this
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     _this.$store.dispatch("USER_REGISTER", {
+      //       form: _this.ruleForm,
+      //       msg: _this.$message,
+      //       callback: (result) => {
+      //         _this.$message.success("注册成功")
+      //         _this.$router.push('/login')
+      //       }
+      //     })
+      //   } else {
+      //     console.log('error submit!!');
+      //     return false;
+      //   }
+      // });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
