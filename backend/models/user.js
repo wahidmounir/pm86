@@ -7,15 +7,23 @@ import $    from '../helpers';
 import Base from './base';
 
 const User = new Base('User', {
-  email:      { type: String, required: true },
-  password:   { type: String, required: true },
-  verifyLink: { type: String, required: true },
-  createdAt:  { type: Date, default: Date.now},
-  auth_code:  {
-    date: Date,
-    code: String
-  },
-  meta:      {},
+  login:        String,
+  id:           Number,
+  avatar_url:   String,
+  url:          String,
+  html_url:     String,
+  name:         String,
+  company:      String,
+  blog:         String,
+  location:     String,
+  email:        String,
+  bio:          String,
+  public_repos: Number,
+  public_gists: Number,
+  followers:    Number,
+  following:    Number,
+  createdAt:   { type: Date, default: Date.now},
+  meta:         {},
 });
 
 export default User

@@ -1,5 +1,10 @@
-<template lang="pug">
+<template lang="jade">
 #bucket-view.view
+  h1(v-if='readyState === 0') WebSocket: The connection is not yet open.
+  h1(v-if='readyState === 1') WebSocket: The connection is open and ready to communicate.
+  h1(v-if='readyState === 2') WebSocket: The connection is in the process of closing.
+  h1(v-if='readyState === 3') WebSocket: The connection is closed or couldn't be opened.
+  h2(v-if='bucket.public_key') pm86 interact {{bucket.secret_key}} {{bucket.public_key}}
   el-card.box-card(v-if='Object.keys(hostList.data).length')
     div(v-for='(host, $index) in hostList.data')
       .title {{host.server_name}}
@@ -34,7 +39,7 @@
             span {{uptime(host.server.uptime)}}
           p
             label memory {{memory(host.server.total_mem)}}
-            .memory(v-bind:style={width: "500px"})
+            .memory(style={width: "500px"})
               .free(v-bind:style="{width: free(host)}")
               .used(v-bind:style="{width: used(host)}")
               .display {{memory(host.server.free_mem)}}  /  {{memory(host.server.total_mem - host.server.free_mem)}}
@@ -102,12 +107,12 @@
         el-table-column(label='Errors', width='110')
           template(scope="scope")
             span {{host.logs[scope.$index].length}}
-  h1(v-else) 暂时无数据😯
 </template>
 
 <script>
 
 import { timestampParse, memory , uptime, timeSince, getCookie} from '../filters'
+import api from 'stores/api'
 import ws from './ws'
 
 export default {
@@ -120,7 +125,9 @@ export default {
   data () {
     return {
       hostList: {data: {}},
-      socket: {}
+      socket: {},
+      readyState: 0,
+      bucket: {},
     }
   },
   methods: {
@@ -164,6 +171,10 @@ export default {
     }
   },
   mounted () {
+    api.get(`/buckets/${this.$route.params.id}`).then(result => {
+      this.bucket = result.data.data
+    }, error => {
+    })
     if(!location.href.match(/debug=true/igm)) {
       console.log = function() {};
     }
@@ -175,83 +186,85 @@ export default {
 <style lang="stylus" scoped>
 #bucket-view
   font-family 'Lucida Console', Monaco, monospace
+  h1
+    font-size 20px
+    margin-top 50px
+  // .server-info .platform, .processes
+  //   .line
+  //     margin 20px 0
 
-  .server-info .platform, .processes
-    .line
-      margin 20px 0
+  //   .el-button
+  //     margin 20px 0
 
-    .el-button
-      margin 20px 0
+  //   p
+  //     line-height 30px
 
-    p
-      line-height 30px
+  //     label
+  //       display inline-block
+  //       width   160px
 
-      label
-        display inline-block
-        width   160px
+  // .title
+  //   font-size   2rem
+  //   padding     20px 0
+  //   clear       both
+  //   font-weight bold
+  //   font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
-  .title
-    font-size   2rem
-    padding     20px 0
-    clear       both
-    font-weight bold
-    font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  // .server-info
+  //   width 100%
 
-  .server-info
-    width 100%
+  //   .memory
+  //     width       500px
+  //     position    relative
+  //     margin-top  -30px
+  //     margin-left 160px
 
-    .memory
-      width       500px
-      position    relative
-      margin-top  -30px
-      margin-left 160px
+  //   .used, .free
+  //     height 30px
+  //     float  left
 
-    .used, .free
-      height 30px
-      float  left
+  //   .used
+  //     background-color #F5DAEB
 
-    .used
-      background-color #F5DAEB
+  //   .free
+  //     background-color #CEF4C9
 
-    .free
-      background-color #CEF4C9
+  //   .display
+  //     line-height  30px
+  //     text-align   center
+  //     padding-left 10px
+  //     position     absolute
 
-    .display
-      line-height  30px
-      text-align   center
-      padding-left 10px
-      position     absolute
+  // .logs
+  //   height 400px
+  //   overflow auto
+  //   padding 0
+  //   margin-top 20px
 
-  .logs
-    height 400px
-    overflow auto
-    padding 0
-    margin-top 20px
+  //   .log
+  //     background-color #333
+  //     color #fff
+  //     padding 10px
+  //     white-space pre
+  //     overflow-x auto
+  //     letter-spacing 1px
+  //     line-height 15px
 
-    .log
-      background-color #333
-      color #fff
-      padding 10px
-      white-space pre
-      overflow-x auto
-      letter-spacing 1px
-      line-height 15px
+  //   .log:after
+  //     content "\2588"
+  //     margin-left 5px
+  //     animation blinker 1s linear infinite
 
-    .log:after
-      content "\2588"
-      margin-left 5px
-      animation blinker 1s linear infinite
-
-    @keyframes blinker {
-      0% {
-        opacity 1.0
-      }
-      50% {
-        opacity 0.0
-      }
-      100% {
-        opacity 1.0
-      }
-    }
+  //   @keyframes blinker {
+  //     0% {
+  //       opacity 1.0
+  //     }
+  //     50% {
+  //       opacity 0.0
+  //     }
+  //     100% {
+  //       opacity 1.0
+  //     }
+  //   }
 
 </style>

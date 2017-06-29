@@ -3,6 +3,5 @@
 
 module.exports = {
   account: require('./account'),
-  bucket:  require('./bucket'),
-  authCode:  require('./authCode'),
+  bucket:  require('./bucket')
 }

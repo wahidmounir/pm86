@@ -1,59 +1,71 @@
-<template lang="pug">
+<template lang="jade">
 #home-view.view
-  h1.title Wellcome to PM86 !
-  p(@click='github') Login
-  .listItem(v-for='(item, index) in items')
-    router-link.link(:to="'/bucket/' + item.public_key")
-      p.name {{item.bucket_name}}
-    span.command &nbsp $ pm86 interact {{item.secret_key}} {{item.public_key}} &nbsp
-  h1.warn(v-if='items.length === 0') 暂时还有没创建哦😯
+  h1.title
+    span(v-if='github.name') {{github.name}}
+    img(v-else, src='../public/github.svg', @click='githubLogin')
+    | . Wellcome to PM86
+  .list(v-for='(item, index) in buckets')
+    router-link(:to="'/buckets/' + item._id")
+      .wrap
+        span {{item.bucket_name}}
+  .list
+    router-link(to="/create")
+      .wrap
+        span Create a bucket!
 </template>
 
 <script>
 import api from 'stores/api'
 export default {
-  name: 'home-view',
   computed: {
-    items () {
-      return this.$store.state.buckets
-    }
   },
   data () {
     return {
       gitConfig: {
         client_id: 'ddf8e94834e773472899',
-        client_secret: '47fbd6e9c4f0309f76ca46b31728efba65ef4feb',
-        scope: 'user:email'
-      }
+        scope:     'user:email'
+      },
+      github: {},
+      buckets: []
     }
   },
   methods: {
-    github () {
-    const dataStr = (new Date()).valueOf();
-    localStorage.setItem('state', dataStr);
-    location.href = `https://github.com/login/oauth/authorize?client_id=${this.gitConfig.client_id}&scope=${this.gitConfig.scope}&state=${dataStr}`;
+    githubLogin() {
+      const dataStr = (new Date()).valueOf();
+      localStorage.setItem('state', dataStr);
+      location.href = `https://github.com/login/oauth/authorize?client_id=${this.gitConfig.client_id}&scope=${this.gitConfig.scope}&state=${dataStr}`;
+    },
+    mine() {
+    },
+    fetch() {
+      api.get('buckets').then(result => {
+        this.buckets = result.data.data
+      })
     }
   },
-  mounted () {
+  mounted() {
+    const github = localStorage.getItem('github');
+    if (github !== null) {
+      this.fetch()
+      return this.github = JSON.parse(github);
+    }
+
     if (this.$route.query.code &&
         this.$route.query.state &&
         this.$route.query.state === localStorage.getItem('state')) {
-      const result = api.post(`https://github.com/login/oauth/access_token?
-                client_id=${this.gitConfig.client_id}&
-                client_secret=${this.gitConfig.client_secret}
-                &code=${this.$route.query.code}`)
-         .then(result => {
-        console.log(result);
-        const args = result.data.split('&');
-        const tokenInfo = args[0].split("=");
-        const token = tokenInfo[1];
-        api.get(`https://api.github.com/user?access_token=${token}`).then(result => {
-          console.log(result);
-        })
+      api.post('/account/github', {code: this.$route.query.code})
+      .then(result => {
+        localStorage.setItem('github', JSON.stringify(result.data.data))
+        this.$notify.success({
+          title: 'Connect github success',
+          message: `Hello ${result.data.data.name}`
+        });
+        this.github = result.data.data
+        this.$router.push('/')
+        this.fetch()
       })
-
     } else {
-      console.log('查询登录失败');
+      console.log('查询登录失败')
     }
   }
 }
@@ -61,62 +73,60 @@ export default {
 
 <style lang="stylus" scoped>
 
-.title {
-  font-weight: 400;
-  font-size: 2rem;
-}
+.title
+  font-weight 400
+  font-size 2rem
 
-/* 列表项间隔padding-top */
-.listItem {
-    position: relative;
-    padding-left: 40px;
-    padding-top: 4px;
-    width: 90%;
-    margin: 0 auto;
-    height: 150px;
-    margin-left 100px;
-}
-/* 列表项自带竖线 */
-.listItem:before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 100%;
-    border-right: 1px solid rgb(50, 65, 87);
-    left: 19px;
-    z-index: 1;
-}
-/* 列表项自带小圆点 */
-.listItem:after {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 12px;
-    height: 1px;
-    background-color: rgb(50, 65, 87);
-    left: 20px;
-    top: 50%;
-    margin-top: -3px;
-    z-index: 1;
-}
+  img
+    width 50px
+    vertical-align text-bottom
+    cursor pointer
+
 #home-view
-  height auto
   padding-top 30px
+  text-align center
 
-  .warn
-    text-align center
-    margin-top 200px
+  .list
+    border 1px solid #cfd8dc
+    width 300px
+    margin 60px auto
+    cursor pointer
+    transition all .2s ease-in-out
+    border-radius 5px
+    box-shadow 0 1px 2px rgba(0, 0, 0, 0.1)
+    border-radius 5px
+    -webkit-transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    font-size 18px
+    .wrap
+      margin 15px 20px
+      border-left 4px solid #cfd8dc
+      padding 10px 20px
+      text-align left
 
-  .name
-    font-size 1.5rem
-    position    absolute
-    bottom 90px
+  .list::after
+    content ""
+    border-radius 5px
+    position absolute
+    z-index -1
+    top 0
+    left 0
+    width 100%
+    height 100%
+    box-shadow 0 5px 15px rgba(0, 0, 0, 0.3)
+    opacity 0
+    -webkit-transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+
+  .list:hover
+    -webkit-transform scale(1.25, 1.25)
+    transform scale(1.25, 1.25)
+
+  .list:hover::after
+      opacity 1
 
   .command
-    position    absolute
+    position absolute
     bottom 35px
     font-family 'Lucida Console', Monaco, monospace
     background-color #3F3F3F

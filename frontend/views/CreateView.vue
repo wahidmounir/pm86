@@ -1,63 +1,29 @@
-<template lang="pug">
+<template lang="jade">
 #create-view.view
-    el-form.create-wrap(:model='ruleForm', :rules='rules', ref='ruleForm', label-width='100px')
-      el-form-item(prop='bucket_name')
-        el-input(v-model='ruleForm.bucket_name', placeholder='Name')
-      el-form-item(prop='bucket_description')
-        el-input(v-model='ruleForm.bucket_description', placeholder='Description')
-      .create-btn
-        el-button(type='primary', @click="submitForm('ruleForm')") Create
-        el-button(@click="resetForm('ruleForm')") Reset
-
+  .bucket_name
+    .wrap
+      input(v-model='form.bucket_name', placeholder='Bucket Name', @keyup.enter='enter')
 </template>
 
 <script>
-
+import api from 'stores/api'
 export default {
-  name: 'create-view',
   data() {
-
-    var validateAll = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('please input'));
-      }
-      callback();
-    };
     return {
-      ruleForm: {
-        bucket_description: '',
+      form: {
         bucket_name: ''
-      },
-      rules: {
-        bucket_description: [
-          { validator: validateAll, trigger: 'blur' }
-        ],
-        bucket_name: [
-          { validator: validateAll, trigger: 'blur' }
-        ]
       }
-    };
+    }
   },
   methods: {
-    submitForm(formName) {
-      let _this = this
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          _this.$store.dispatch("ADD_BUCKET", {
-            form: _this.ruleForm,
-            callback: (result) => {
-              _this.$message("创建成功");
-              _this.$router.push('/buckets');
-            }
-          })
-        } else {
-          console.log('error submit!!')
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    enter() {
+      if (this.form.bucket_name === '') {return;}
+      api.post('/buckets', this.form).then(result => {
+        this.$notify.success({ message: 'Success' });
+        this.$router.push(`/buckets/${result.data.data._id}`)
+      }, err => {
+        this.$notify.error({ message: 'Error' });
+      })
     }
   },
   mounted () {
@@ -65,27 +31,27 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 #create-view
-
-  .create-wrap{
-    position: absolute;
-    left:50%;
-    top:50%;
-    width:300px;
-    height:170px;
-    margin:-150px 0 0 -190px;
-    padding:40px;
-    border-radius: 5px;
-    background: #fff;
-  }
-
-  .el-form-item__content {
-    margin-left: 0 !important;
-  }
-
-  .create-btn{
-    text-align: center;
-  }
-
+  .bucket_name
+    border 1px solid #cfd8dc
+    width 400px
+    margin 60px auto
+    cursor pointer
+    transition all .2s ease-in-out
+    border-radius 5px
+    box-shadow 0 1px 2px rgba(0, 0, 0, 0.1)
+    border-radius 5px
+    -webkit-transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    transition all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)
+    font-size 18px
+    .wrap
+      margin 15px 20px
+      border-left 4px solid #cfd8dc
+      padding 10px 20px
+      text-align left
+    input
+      outline none
+      border none
+      font-size 20px
 </style>

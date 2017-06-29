@@ -242,5 +242,8 @@ export default (__this) => {
   socket.on(channel + ':profiling', function(data) {
     console.log("on profiling")
   });
+  setTimeout(function () {
+    __this.readyState = socket.readyState
+  }, 2000);
   __this.$set(__this, 'socket', socket)
 }

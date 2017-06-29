@@ -16,14 +16,12 @@ const BucketAPI = new Base({
   model: BucketModel
 });
 
-BucketAPI.methods.all = async function(req, res, next) {
-  if ($.empty(req.session.user)) {return $.result(res, []);}
+BucketAPI.all = async function(req, res, next) {
   const bucket = await BucketModel.all({'user': req.session.user._id});
   $.result(res, bucket);
 }
 
-BucketAPI.methods.create = async function(req, res, next) {
-  if ($.empty(req.session.user)) {return $.result(res, []);}
+BucketAPI.create = async function(req, res, next) {
   diffHell.generateKeys('base64');
   const secret_key = diffHell.getPrivateKey('hex');
   const public_key = diffHell.getPublicKey('hex');
@@ -32,14 +30,15 @@ BucketAPI.methods.create = async function(req, res, next) {
     'secret_key':         secret_key,
     'public_key':         public_key,
     'bucket_name':        req.body.bucket_name,
-    'bucket_description': req.body.bucket_description
   };
   const bucket = await BucketModel.create(bucketData);
+  delete bucket.secret_key;
+  delete bucket.public_key;
   $.result(res, bucket);
 }
 
 
-BucketAPI.methods.verify = async function (req, res) {
+BucketAPI.verify = async function (req, res) {
   $.debug(req.body);
   // const bucket = await BucketModel.find(req.body);
   // if ($.empty(bucket)) {
@@ -61,4 +60,4 @@ BucketAPI.methods.verify = async function (req, res) {
   });
 }
 
-module.exports = BucketAPI.methods
+module.exports = BucketAPI

@@ -3,11 +3,11 @@ import config from '../../config.json'
 import Vue from 'vue'
 const isProd = process.env.NODE_ENV === 'production'
 
-const currentConfig = config[isProd ? 'prod' : 'dev']
-const api_version   = 'v1';
+const current = config[isProd ? 'prod' : 'dev']
+const version = 'v1';
 
 const axios = require('axios').create({
-  baseURL: `${currentConfig.base_url}/api/${api_version}`,
+  baseURL: `${current.base_url}/${version}`,
   timeout: 10000,
   headers: {'X-Requested-With': 'XMLHttpRequest'},
   transformResponse: [function (data) {

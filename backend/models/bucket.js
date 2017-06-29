@@ -11,7 +11,6 @@ const Bucket = new Base('Bucket', {
   secret_key:         { type: String, required: true },
   public_key:         { type: String, required: true },
   bucket_name:        { type: String, required: true },
-  bucket_description: { type: String, default: '' },
   createdAt:          { type: Date, default: Date.now}
 });
 

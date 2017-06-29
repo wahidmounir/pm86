@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import $        from '../helpers';
 
 const rules  = [{ path: 'user', select: '' }, { path: '' }];
-const select = '';
+const select = ['-secret_key', '-public_key'];
 
 // baseModel
 export default class Base {
@@ -43,8 +43,7 @@ export default class Base {
 
   async find(query) {
     try {
-      return await this.model.findOne(query)
-        .populate(rules);
+      return await this.model.findOne(query).populate(rules);
     } catch (e) {
       console.error(e);
     }
