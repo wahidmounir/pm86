@@ -143,10 +143,11 @@ ProcessData.prototype._map = function(data) {
   }.bind(this));
 };
 
-import config from '../../../config.json'
+import config from '../../config/config.js'
 import {timestampParse, memory , uptime, timeSince, getCookie} from '../filters'
 const isProd = process.env.NODE_ENV === 'production'
-let wsaddr = isProd ? `wss://${config.prod.ws}` : `ws://${config.dev.ws}`
+const wspro = isProd ? 'wss://' : 'ws://'
+const wsaddr = wspro + config.ws
 
 export default (__this) => {
   let __lags = new Date().getTime();

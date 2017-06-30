@@ -169,7 +169,7 @@ function profilingProcess(msg, data) {
 
 }
 
-sock.bind(3000);
+sock.bind(3003);
 sock.on('message', messageHandler.bind(sock));
 sock.on('process:exception', function () {});
 req.connect(43666);

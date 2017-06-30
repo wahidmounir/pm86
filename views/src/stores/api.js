@@ -1,18 +1,22 @@
 
-import config from '../../../config.json'
 import Vue from 'vue'
-const isProd = process.env.NODE_ENV === 'production'
-
-const current = config[isProd ? 'prod' : 'dev']
+import config from '../../config/config.js'
 const version = 'v1';
 
 const axios = require('axios').create({
-  baseURL: `${current.base_url}/${version}`,
+  baseURL: `${config.base_url}/${version}`,
   timeout: 10000,
+  withCredentials: true, // 允许跨域 cookie
   headers: {'X-Requested-With': 'XMLHttpRequest'},
   transformResponse: [function (data) {
     console.log(data);
-    return JSON.parse(data);
+    let json;
+    try {
+      json = JSON.parse(data)
+    } catch (e){
+      return {};
+    }
+    return json;
   }],
 });
 

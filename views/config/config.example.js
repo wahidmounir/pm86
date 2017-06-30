@@ -1,14 +1,12 @@
-const isDev = process.env.NODE_ENV === 'development'
-
 const config = {
   'development': {
-    'host': '',
-    'account': ''
+    base_url: 'http://127.0.0.1:3000/api',
+    ws: '127.0.0.1:3002'
   },
   'production': {
-    'host': '',
-    'account': ''
+    base_url: 'http://127.0.0.1:3000/api',
+    ws: '127.0.0.1:3002'
   }
 }
 
-export default isDev ? config['development'] : config['production']
+export default process.env.NODE_ENV === 'production' ? config['production'] : config['development']

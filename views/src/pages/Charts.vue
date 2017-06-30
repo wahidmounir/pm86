@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import IEcharts from 'vue-echarts-v3';
+import IEcharts from 'vue-echarts-v3/src/full.vue';
+import mock from './mock.json'
 export default {
   components: {
     IEcharts
@@ -52,69 +53,25 @@ export default {
       ]
     },
     pie: {
-      color:["#20a0ff","#13CE66","#F7BA2A","#FF4949","#61a0a8"],
-      title : {
-        text: '饼状图',
-        x:'center'
-      },
+      color:["#13CE66","#FF4949"],
       tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
       },
       legend: {
         orient: 'vertical',
-        left: 'left',
-        data: ["文章", "用户", "专题", "广告", "视频"]
+        top: 'top',
+        data: ["Free", "Usage"]
       },
       series : [
         {
-          name: '总量',
+          name: 'Total',
           type: 'pie',
           radius : '55%',
           center: ['50%', '50%'],
           data:[
-            {value:335, name:'文章'},
-            {value:310, name:'用户'},
-            {value:234, name:'专题'},
-            {value:135, name:'广告'},
-            {value:548, name:'视频'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    },
-    pie_radius:{
-      color:["#20a0ff","#13CE66","#F7BA2A","#FF4949","#61a0a8"],
-      title : {
-        text: '环形图',
-        x:'center'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ["文章", "用户", "专题", "广告", "视频"]
-      },
-      series : [
-        {
-          name: '总量',
-          type: 'pie',
-          radius : ['40%','60%'],
-          data:[
-            {value:335, name:'文章'},
-            {value:310, name:'用户'},
-            {value:234, name:'专题'},
-            {value:135, name:'广告'},
-            {value:548, name:'视频'}
+            {value:335, name:'Free'},
+            {value:310, name:'Usage'},
           ],
           itemStyle: {
             emphasis: {

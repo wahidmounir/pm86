@@ -1,23 +1,22 @@
 import moment from 'moment';
 import crypto from 'crypto';
-import config from '../../config';
 import log4js from 'log4js';
+import config from '../config';
 import cipher from './cipher';
 import email  from  './email';
 import auth   from  './auth';
+import log_config from './log_config';
 
-const isProd    = process.env.NODE_ENV === 'production';
 const cryptkey  = crypto.createHash('sha256').update('__tazai_wolf__key').digest();
-const iv        = config[isProd ? 'prod' : 'dev'].secret;
+const iv        = config.secret;
 
-log4js.configure(config.log, {});
+log4js.configure(log_config, {});
 
 const logger = log4js.getLogger('debug');
 logger.setLevel('auto');
 
 module.exports           = logger;
-module.exports.config    = config[isProd ? 'prod' : 'dev'];
-module.exports.isProd    = isProd;
+module.exports.config    = config;
 module.exports.moment    = moment;
 module.exports.cipher    = cipher;
 module.exports.auth      = auth;
