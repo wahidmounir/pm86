@@ -1,0 +1,46 @@
+{
+  "name": "pm86-cloud",
+  "description": "",
+  "author": "JK <jk77.me@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon index.js",
+    "prod": "cross-env NODE_ENV=production node server.js",
+    "build": "rimraf dist && npm run build:client && npm run build:server",
+    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
+  },
+  "engines": {
+    "node": ">=6.0",
+    "npm": ">=3.0"
+  },
+  "dependencies": {
+    "axon": "^2.0.3",
+    "axon-rpc": "^0.0.3",
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.6.7",
+    "compression": "^1.6.2",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.3.2",
+    "cross-env": "^3.1.3",
+    "debug": "^2.0.0",
+    "es6-promise": "^4.0.5",
+    "express": "^4.14.1",
+    "express-session": "^1.10.4",
+    "log4js": "^1.1.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.9.1",
+    "morgan": "^1.2.3",
+    "nodemailer": "^3.1.8",
+    "nssocket": "^0.6.0",
+    "socket.io": "^1.7.2",
+    "socket.io-client": "^1.7.2",
+    "ws": "^2.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-3": "^6.22.0"
+  }
+}
